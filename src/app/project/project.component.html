@@ -1,0 +1,40 @@
+<div class="project-wrapper">
+    <div class="project-list">
+        <!-- <div class="d-flex align-items-center pt-3 mx-3 pb-2">
+            <i class="material-icons text-dark">person</i>
+            <h4 class="text-dark mx-2">Cá nhân</h4>
+        </div> -->
+        <ul class="d-flex pt-3">
+            <li *ngFor="let project of projectsPersonal; let i = index" class="mx-2 position-relative">
+                <div class="card-project position-relative">
+                    <a [routerLink]="['/client/dashboard', project._id]">
+                        <div class="overplay"></div>
+                        <div class="content d-flex align-items-center justify-content-between">
+                            <h4 class="text-white">{{ project.title }}</h4>
+                        </div>
+                    </a>
+                    <div class="btn-action position-absolute">
+                        <i (click)="toggleAction(i)" class="material-icons">more_vert</i>
+                    </div>
+                    <div class="avtMember position-absolute">
+                        <span *ngFor="let memberId of project.user">
+                            <ng-container *ngIf="getUserById(memberId) as user">
+                                <img src="/assets/img/faces/{{ user.avatar }}" alt="" />
+                            </ng-container>
+                        </span>
+                    </div>
+                </div>
+
+                <div [hidden]="isHiddenAction || selectedIndexAction !== i" class="action position-absolute p-2">
+                    <div class="title_action text-center pb-2">
+                        <span class="text-center">Thao tác</span>
+                        <i (click)="toggleAction(-1)" class="material-icons text-right">close</i>
+                    </div>
+                    <ul>
+                        <li (click)="deleteBoard(project._id)" class="text-left">Xóa bảng</li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

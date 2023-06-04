@@ -1,0 +1,116 @@
+<div class="background">
+    <img src="/assets/img/bg.jpg" alt="" />
+</div>
+<div class="logo d-flex justify-content-center">
+    <a [routerLink]="['/']">
+        <img style="width: 14rem" src="/assets/img/logo/logo-no-background.svg" alt="" />
+    </a>
+</div>
+<div class="container" id="container" [ngClass]="{ 'right-panel-active': isRightPanelActive }">
+    <div class="form-container register-container">
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+            <h1>Đăng ký</h1>
+            <span style="margin: 0" class="d-block text-danger m-0">{{ errMessageSignup }}</span>
+            <span
+                style="margin: 0"
+                class="d-block text-danger m-0"
+                *ngIf="signupForm.controls['fullname'].hasError('required') && signupForm.controls['fullname'].touched"
+                class="text-danger"
+            >
+                Tên không được bỏ trống
+            </span>
+            <input formControlName="fullname" type="text" id="fullname" name="fullname" placeholder="Họ tên" />
+            <span
+                style="margin: 0"
+                class="d-block text-danger m-0"
+                *ngIf="signupForm.controls['email'].hasError('required') && signupForm.controls['email'].touched"
+                class="text-danger"
+            >
+                Email không được bỏ trống
+            </span>
+            <input formControlName="email" type="email" id="email" name="email" placeholder="Email" />
+            <span
+                style="margin: 0"
+                class="d-block text-danger m-0"
+                *ngIf="signupForm.controls['password'].hasError('required') && signupForm.controls['password'].touched"
+                class="text-danger"
+            >
+                Mật khẩu không được bỏ trống
+            </span>
+            <input formControlName="password" type="password" id="password" name="password" placeholder="Mật khẩu" />
+            <span
+                style="margin: 0"
+                class="d-block text-danger m-0"
+                *ngIf="signupForm.controls['repassword'].hasError('required') && signupForm.controls['repassword'].touched"
+                class="text-danger"
+            >
+                Vui lòng nhập xác nhận mật khẩu
+            </span>
+            <input formControlName="repassword" type="password" id="repassword" name="repassword" placeholder="Nhập lại mật khẩu" />
+            <button id="btnRegis" [disabled]="signupForm.invalid">Đăng ký</button>
+        </form>
+    </div>
+
+    <div class="form-container login-container">
+        <form id="form-login" [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+            <h1>Đăng nhập</h1>
+            <span
+                style="margin: 0"
+                class="d-block text-danger m-0"
+                *ngIf="signinForm.controls['email'].hasError('required') && signinForm.controls['email'].touched"
+                class="text-danger"
+            >
+                Email không được bỏ trống
+            </span>
+            <span
+                style="margin: 0"
+                class="d-block text-danger m-0"
+                *ngIf="signinForm.controls['password'].hasError('required') && signinForm.controls['password'].touched"
+                class="text-danger"
+            >
+                Mật khẩu không được bỏ trống
+            </span>
+            <span style="margin: 0" class="d-block text-danger m-0">{{ errMessageSignin }}</span>
+
+            <input formControlName="email" type="email" name="email" id="logInemail" placeholder="Email" />
+            <input formControlName="password" type="password" name="password" id="password" placeholder="Mật khẩu" />
+            <div class="content">
+                <div class="checkbox">
+                    <input type="checkbox" name="checkbox" id="checkbox" />
+                    <label>Nhớ mật khẩu</label>
+                </div>
+                <div class="pass-link">
+                    <a href="/user/forgotPass">Quên mật khẩu?</a>
+                </div>
+            </div>
+            <button type="submit" id="btnLogIn" [disabled]="signinForm.invalid">Đăng nhập</button>
+            <span>hoặc bằng tài khoản</span>
+            <div class="social-container">
+                <a href="#" class="social"><img src="/assets/img/icons/facebook.svg" alt="" /></a>
+                <a href="#" class="social"><img src="/assets/img/icons/instagram.svg" alt="" /></a>
+                <a href="#" class="social"><img src="/assets/img/icons/twitter.svg" alt="" /></a>
+            </div>
+        </form>
+    </div>
+
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-left">
+                <h1 class="title text-light">Xin chào</h1>
+                <p>Nếu bạn có tài khoản, hãy đăng nhập ở đây</p>
+                <button class="ghost" id="login" (click)="onLoginClick()">
+                    Đăng nhập
+                    <i class="lni lni-arrow-left login"></i>
+                </button>
+            </div>
+            <div class="overlay-panel overlay-right">
+                <h1 class="title text-light">Bắt đầu hành trình của bạn</h1>
+                <p>Nếu bạn chưa có tài khoản, hãy tham gia với chúng tôi và bắt đầu hành trình của bạn.</p>
+                <button class="ghost" id="register" (click)="onRegisterClick()">
+                    Đăng ký
+                    <i class="lni lni-arrow-right register"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,220 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="root">
+                <div class="board">
+                    <div class="board-wrapper" cdkDropListGroup>
+                        <div class="board-columns">
+                            <div class="board-column" *ngFor="let column of board.columns; let i = index">
+                                <div class="column-title d-flex align-items-center justify-content-between">
+                                    <span class="px-2"> {{ column.name }} </span>
+                                    <i (click)="toggleAction(i)" class="material-icons">more_vert</i>
+                                </div>
+                                <div [hidden]="isHiddenAction || selectedIndexAction !== i" class="action position-absolute p-2">
+                                    <div class="title_action text-center pb-2">
+                                        <span class="text-center">Thao tác</span>
+                                        <i (click)="toggleAction(-1)" class="material-icons text-right">close</i>
+                                    </div>
+                                    <ul class="action-list">
+                                        <li (click)="toggleForm(i, column.id)" class="text-left">Thêm thẻ</li>
+                                        <li (click)="deleteList(column.id)" class="text-left">Xóa list</li>
+                                    </ul>
+                                </div>
+                                <div
+                                    class="tasks-container position-relative"
+                                    cdkDropList
+                                    [cdkDropListData]="column.tasks"
+                                    (cdkDropListDropped)="drop($event, column.id)"
+                                >
+                                    <!-- Task of list -->
+                                    <div
+                                        class="task d-flex justify-content-between align-items-center position-relative"
+                                        *ngFor="let item of column.tasks; let iT = index"
+                                        (mousedown)="getIdTask(item.id)"
+                                        cdkDrag
+                                    >
+                                        <!-- Title task -->
+                                        <div [hidden]="selectedIndexActionEditTask[i] == iT" class="status-card position-absolute">
+                                            <button
+                                                class="m-0 px-2 py-0"
+                                                [class.task-not-started]="item.status === 'not-started'"
+                                                [class.task-not-started]="item.status === 'not-started'"
+                                                [class.task-in-progress]="item.status === 'in-progress'"
+                                                [class.task-pause]="item.status === 'pause'"
+                                                [class.task-bug]="item.status === 'bug'"
+                                                [class.task-completed]="item.status === 'completed'"
+                                            ></button>
+                                        </div>
+                                        <div [hidden]="selectedIndexActionEditTask[i] == iT">
+                                            {{ item.taskTitle }}
+                                            <div class="date-task d-flex align-items-center">
+                                                <small style="font-size: 0.6rem; line-height: 15px" class=""
+                                                    >{{ item.dateStart }} {{ item.dateEnd }}
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Edit task -->
+                                        <form
+                                            [hidden]="selectedIndexActionEditTask[i] !== iT"
+                                            (ngSubmit)="editFormTask(myForm)"
+                                            class="editTask"
+                                            #myForm="ngForm"
+                                        >
+                                            <input type="text" name="id" [(ngModel)]="item.id" hidden />
+                                            <input type="text" name="taskTitle" required [(ngModel)]="item.taskTitle" /> <br />
+                                            <button (click)="toggleActionEditTask(i, -1)" class="btn-common submit mt-1" type="submit">Lưu</button>
+                                            <span (click)="toggleActionEditTask(i, -1)" class="ml-2 text-center">Hủy</span>
+                                        </form>
+                                        <!-- Nút tháo tác task -->
+                                        <i (click)="toggleActionTask(i, iT)" class="material-icons">edit</i>
+
+                                        <!-- action task -->
+                                        <div
+                                            [hidden]="selectedIndexActionTask[i] !== iT"
+                                            style="top: 0; right: -10.5rem"
+                                            class="action position-absolute p-2"
+                                        >
+                                            <div class="title_action text-center pb-2">
+                                                <span class="text-center">Thao tác</span>
+                                                <i (click)="toggleActionTask(i, -1)" class="material-icons text-right">close</i>
+                                            </div>
+                                            <ul class="list-action">
+                                                <li (click)="toggleActionStatus(i, iT)" class="text-left">Trạng thái</li>
+                                                <li (click)="toggleActionDateTask(i, iT)" class="text-left">Chỉnh sửa ngày</li>
+                                                <li (click)="toggleActionEditTask(i, iT)" class="text-left">Sửa thẻ</li>
+                                                <li (click)="deleteTask(i, item.id)" class="text-left">Xóa thẻ</li>
+                                            </ul>
+                                        </div>
+                                        <!-- Status task -->
+                                        <div
+                                            [hidden]="selectedIndexActionStatus[i] !== iT"
+                                            style="top: 0; right: -10.5rem"
+                                            class="action position-absolute p-2"
+                                        >
+                                            <div class="title_action text-center pb-2">
+                                                <span class="text-center">Trạng thái</span>
+                                                <i (click)="toggleActionStatus(i, -1)" class="material-icons text-right">close</i>
+                                            </div>
+                                            <div class="status">
+                                                <button
+                                                    (click)="addStatus(item.id, 'not-started')"
+                                                    style="background-color: #fff"
+                                                    class="text-left btn-status"
+                                                >
+                                                    <i class="material-icons">info</i> Bình thường
+                                                </button>
+                                                <button
+                                                    (click)="addStatus(item.id, 'in-progress')"
+                                                    style="background-color: rgb(165, 195, 211)"
+                                                    class="text-left btn-status"
+                                                >
+                                                    <i class="material-icons text-right">cached</i> Trong quá trình
+                                                </button>
+                                                <button
+                                                    (click)="addStatus(item.id, 'pause')"
+                                                    style="background-color: rgb(255 188 0 / 52%)"
+                                                    class="text-left btn-status"
+                                                >
+                                                    <i class="material-icons">warning</i> Tạm ngưng
+                                                </button>
+                                                <button
+                                                    (click)="addStatus(item.id, 'completed')"
+                                                    style="background-color: rgb(172, 217, 172)"
+                                                    class="text-left btn-status"
+                                                >
+                                                    <i class="material-icons text-right">check</i> Đã hoàn thành
+                                                </button>
+                                                <button
+                                                    (click)="addStatus(item.id, 'bug')"
+                                                    style="background-color: rgb(244 67 54 / 80%)"
+                                                    class="text-left btn-status"
+                                                >
+                                                    <i class="material-icons">error</i> Cấp bách
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Date task -->
+                                        <div
+                                            [hidden]="selectedIndexActionDateTask[i] !== iT"
+                                            style="top: 0; right: -10.5rem"
+                                            class="action position-absolute p-2"
+                                        >
+                                            <div class="title_action text-center pb-2">
+                                                <span class="text-center">Thao tác</span>
+                                                <i (click)="toggleActionDateTask(i, -1)" class="material-icons text-right">close</i>
+                                            </div>
+                                            <form (ngSubmit)="dateFormTask(myForm)" class="dateTask py-2 m-0" #myForm="ngForm">
+                                                <input type="text" name="id" [(ngModel)]="item.id" hidden />
+
+                                                <label for="dateStart">Ngày bắt đầu</label>
+                                                <input type="date" name="dateStart" id="dateStart" [(ngModel)]="dateStartValue" />
+
+                                                <label for="dateEnd">Ngày kết thúc</label>
+                                                <input type="date" name="dateEnd" id="dateEnd" [(ngModel)]="dateEndValue" />
+
+                                                <button (click)="toggleActionDateTask(i, -1)" class="btn-common submit mt-1" type="submit">
+                                                    Lưu
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="add-task" (click)="toggleForm(i, column.id)" [hidden]="isAdd && selectedColumnIndex === i">
+                                    + Thêm thẻ
+                                </div>
+
+                                <div class="add-form_task" [hidden]="isHidden || selectedColumnIndex !== i">
+                                    <!-- Form "Thêm thẻ" -->
+                                    <form class="m-0" [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
+                                        <input formControlName="listId" type="text" hidden />
+                                        <input formControlName="title" placeholder="Nhập nội dung" required type="text" />
+                                        <button
+                                            style="background-color: var(--cyan); color: #fff; font-size: 0.8rem"
+                                            class="submit mt-2"
+                                            type="submit"
+                                            [disabled]="addTaskForm.invalid"
+                                        >
+                                            Thêm thẻ
+                                        </button>
+                                        <span
+                                            style="width: 30%; font-size: 0.8rem; background-color: #fff"
+                                            class="mx-2 px-3 py-2"
+                                            (click)="toggleForm(-1)"
+                                            >Hủy</span
+                                        >
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="add-colum">
+                            <span (click)="toggleFormList()" [hidden]="isAddList" class="text-white">+ Thêm danh sách</span>
+                            <div class="add-form_task" [hidden]="isHiddenList">
+                                <!-- Form "Thêm thẻ" -->
+                                <form [formGroup]="addListForm" (ngSubmit)="onSubmit()">
+                                    <input formControlName="titleList" placeholder="Nhập nội dung" required type="text" />
+                                    <button
+                                        style="background-color: var(--cyan); color: #fff; font-size: 0.8rem"
+                                        class="submit mt-2"
+                                        type="submit"
+                                        [disabled]="addListForm.invalid"
+                                    >
+                                        Thêm
+                                    </button>
+                                    <span
+                                        (click)="toggleFormList()"
+                                        style="width: 35%; font-size: 0.8rem; background-color: #fff"
+                                        class="mx-2 px-3 py-2"
+                                        >Hủy</span
+                                    >
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

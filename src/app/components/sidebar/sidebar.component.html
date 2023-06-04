@@ -1,0 +1,57 @@
+<div class="logo pb-4">
+    <a [routerLink]="['/client']" class="simple-text">
+        <div class="logo-img">
+            <img src="/assets/img/logo/logo-admin-dark.png" />
+        </div>
+    </a>
+</div>
+<div class="sidebar-wrapper">
+    <ul class="nav">
+        <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link" [routerLink]="['/client/project']">
+                <i class="material-icons">dashboard</i>
+                <p>Dự án</p>
+            </a>
+        </li>
+        <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link" [routerLink]="['/client/user-profile']">
+                <i class="material-icons">person</i>
+                <p>Tài khoản</p>
+            </a>
+        </li>
+        <!-- <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link" [routerLink]="['/client/teams']">
+                <i class="material-icons">group</i>
+                <p>Nhóm</p>
+            </a>
+        </li> -->
+    </ul>
+    <ul class="list-board py-3" [hidden]="isHidden">
+        <h6 class="py-2">Các dự án của bạn</h6>
+        <li class="position-relative" *ngFor="let project of projects">
+            <a
+                class="d-flex justify-content-between align-items-center"
+                [ngClass]="{ active: boardId === project._id }"
+                href="/client/dashboard/{{ project._id }}"
+            >
+                <span>{{ project.title }}</span>
+            </a>
+            <span (click)="toggleDisplayMem()" class="add-member position-absolute" title="Thêm thành viên"><i class="material-icons">add</i></span>
+        </li>
+    </ul>
+</div>
+<div (click)="toggleDisplayMem()" class="overplay-form_mem" [hidden]="isDisplayedMem"></div>
+<div [hidden]="isDisplayedMem" class="add-member_form element-to-hide">
+    <form class="form" (ngSubmit)="addMember(myForm)" #myForm="ngForm">
+        <p class="title">Thêm thành viên</p>
+        <small style="font-size: 0.7rem" class="text-danger">{{ errMess }}</small>
+        <label>
+            <input required [(ngModel)]="email" name="email" type="email" class="input" />
+            <span>Email <i class="text-danger">*</i></span>
+        </label>
+        <button class="submit" type="submit">Thêm</button>
+    </form>
+</div>
+<div class="success-notification" *ngIf="showNotification">
+    <p class="message">{{ notificationMessage }}</p>
+</div>

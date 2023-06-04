@@ -1,0 +1,153 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header card-header-tabs card-header-primary">
+                        <div class="nav-tabs-navigation">
+                            <div class="nav-tabs-wrapper">
+                                <ul class="nav nav-tabs" data-tabs="tabs">
+                                    <li class="nav-item">
+                                        <a (click)="toggleChangePasswordForm()" mat-button class="nav-link active" href="#profile" data-toggle="tab">
+                                            <i class="material-icons">bug_report</i> Đổi thông tin
+                                            <div class="ripple-container"></div>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a (click)="toggleChangePasswordForm()" mat-button class="nav-link" href="#changepass" data-toggle="tab">
+                                            <i class="material-icons">code</i> Đổi mật khẩu
+                                            <div class="ripple-container"></div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="profile">
+                                <form [formGroup]="infoForm" (ngSubmit)="onSubmit()">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <mat-form-field class="example-full-width">
+                                                <input formControlName="email" matInput placeholder="Email" disabled />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <mat-form-field class="example-full-width">
+                                                <input formControlName="fullname" matInput placeholder="Họ và Tên" type="text" />
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <mat-form-field class="example-full-width">
+                                                <input formControlName="phone" matInput placeholder="SDT" type="text" />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <mat-form-field class="example-full-width">
+                                                <input matInput placeholder="Địa chỉ" type="text" />
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <mat-form-field class="example-full-width">
+                                                <input matInput placeholder="Tỉnh / Thành phố" type="text" />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="example-full-width">
+                                                <input matInput placeholder="Quận / huyện" type="text" />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field class="example-full-width">
+                                                <input matInput placeholder="Phường / xã" type="text" />
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label style="margin-left: 1rem" for="">Đổi ảnh</label>
+                                        <div class="col-md-12">
+                                            <input matInput type="file" (change)="onImageChange($event.target)" />
+                                        </div>
+                                    </div>
+                                    <button mat-raised-button [disabled]="infoForm.invalid" type="submit" class="btn btn-danger pull-right">
+                                        Lưu thông tin
+                                    </button>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="changepass">
+                                <form [formGroup]="changepassForm" (ngSubmit)="onSubmit()">
+                                    <div class="row">
+                                        <span style="margin: 0" class="d-block text-danger m-0">{{ errMesses }}</span>
+                                        <div class="col-md-12">
+                                            <mat-form-field class="example-full-width">
+                                                <input formControlName="password" type="password" matInput placeholder="Mật khẩu cũ" />
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <mat-form-field class="example-full-width">
+                                                <input
+                                                    formControlName="newpassword"
+                                                    type="password"
+                                                    matInput
+                                                    placeholder="Mật khẩu mới"
+                                                    type="password"
+                                                />
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <mat-form-field class="example-full-width">
+                                                <input
+                                                    formControlName="repassword"
+                                                    type="password"
+                                                    matInput
+                                                    placeholder="Nhập lại mật khẩu mới"
+                                                    type="password"
+                                                />
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <button mat-raised-button type="submit" [disabled]="changepassForm.invalid" class="btn btn-danger pull-right">
+                                        Đổi mật khẩu
+                                    </button>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-profile">
+                    <div class="card-avatar">
+                        <a href="javascript:void(0)">
+                            <img class="img" src="./assets/img/faces/{{ avt }}" />
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-category text-gray">FPT Folytechnic</h6>
+                        <h4 class="card-title">{{ fullname }}</h4>
+                        <div class="text-center">
+                            <span>Tổng dự án</span>
+                            <h3>{{ totalBoard }}</h3>
+                        </div>
+                        <!-- <a href="javascript:void(0)" class="btn btn-danger btn-round">Follow</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="success-notification" *ngIf="showNotification">
+    <p class="message">{{ notificationMessage }}</p>
+</div>

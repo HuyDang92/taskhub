@@ -1,0 +1,350 @@
+* {
+    list-style: none;
+    box-sizing: border-box;
+}
+:root {
+    --ds-shadow-raised: 0px 1px 1px #091e4240, 0px 0px 1px #091e424f;
+}
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.app-name {
+    font-size: 25px;
+    // font-family: "Lato", sans-serif;
+    font-weight: bold;
+}
+
+.has-gradient-text {
+    background: -webkit-linear-gradient(#13f7f4, #2af598);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.board {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    // Override Automatic Minimum Size
+    // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+    min-width: 0;
+    min-height: 0;
+
+    .board-bar {
+        background: rgba(gray, 0.5);
+        padding: 8px 15px;
+
+        .board-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+    }
+
+    .board-wrapper {
+        display: flex;
+        flex-grow: 1;
+        // overflow-x: auto;
+
+        .board-columns {
+            display: flex;
+            flex-grow: 1;
+
+            .board-column {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                flex-basis: 0; // to force the columns to all be the same size, regardless of content
+
+                width: 300px;
+                height: fit-content;
+                margin: 15px;
+                padding: 10px;
+
+                border-radius: 10px;
+
+                background-color: rgba(white, 0.5);
+                // backdrop-filter: blur(10px);
+                box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.05), 0 3px 14px 2px rgba(0, 0, 0, 0.05);
+
+                &:not(:first-child) {
+                    margin-left: 0;
+                }
+
+                .column-title {
+                    font-size: 17px;
+                    font-weight: 800;
+                    text-transform: uppercase;
+                    margin-bottom: 20px;
+                    i {
+                        cursor: pointer;
+                        padding: 0.2rem;
+                        border-radius: 50%;
+                        transition: all 0.3s;
+                        &:hover {
+                            background-color: rgba(154, 142, 142, 0.2);
+                        }
+                    }
+                }
+                .action * {
+                    font-size: 0.8rem;
+                }
+                .action {
+                    border-radius: 5px;
+                    width: 200px;
+                    list-style: none;
+                    background-color: #fff;
+                    top: 0rem;
+                    right: -70%;
+                    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.05), 0 3px 14px 2px rgba(0, 0, 0, 0.05);
+                    z-index: 1000;
+                    .title_action {
+                        border-bottom: 1px dotted #ccc;
+                        position: relative;
+                        i {
+                            cursor: pointer;
+                            position: absolute;
+                            right: 0;
+                            display: inline;
+                        }
+                    }
+                    ul {
+                        padding: 0;
+                        margin: 0;
+                        margin-top: 0.4rem;
+                        li {
+                            cursor: pointer;
+                            padding: 0.2rem 0.5rem;
+                            transition: all 0.2s;
+
+                            &:hover {
+                                background-color: rgba(154, 142, 142, 0.2);
+                            }
+                        }
+                    }
+                    .status {
+                        padding: 0;
+                        margin: 0;
+                        margin-top: 0.4rem;
+                        button.btn-status {
+                            outline: none;
+                            border: 1px solid #ccc;
+                            // border: none;
+                            width: 100%;
+                            color: #383737;
+                            cursor: pointer;
+                            padding: 0.2rem 0.5rem;
+                            margin: 0.3rem 0;
+                            transition: all 0.2s;
+                            border-radius: 20px;
+                            display: flex;
+                            align-items: center;
+                            transition: all 0.3s;
+                            &:hover {
+                                background-color: rgba(154, 142, 142, 0.2);
+                            }
+                            i {
+                                display: inline;
+                            }
+                            &:active {
+                                animation: press 0.2s 1 linear;
+                            }
+                        }
+                    }
+                    .dateTask {
+                        input {
+                            width: 100%;
+                            border-radius: 5px;
+                            border: 2px solid #ccc;
+                            padding: 5px;
+                        }
+                    }
+                }
+            }
+            .add-task {
+                color: #000;
+                cursor: pointer;
+                padding: 0.3rem 0.4rem;
+                border-radius: 10px;
+                &:hover {
+                    background: rgba(141, 139, 139, 0.5);
+                }
+            }
+        }
+        .add-colum {
+            cursor: pointer;
+            width: 225px;
+            height: -moz-fit-content;
+            height: fit-content;
+            margin: 15px;
+            margin-left: 0;
+            padding: 15px;
+
+            border-radius: 10px;
+
+            background-color: rgba(rgb(138, 132, 132), 0.4);
+            box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.05), 0 3px 14px 2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            &:hover {
+                background: rgba(110, 108, 108, 0.7);
+            }
+        }
+    }
+}
+
+.tasks-container {
+    flex-grow: 1;
+    // overflow-y: auto;
+    min-height: 15px;
+    .task-not-started {
+        background-color: transparent;
+    }
+    .task-in-progress {
+        background-color: rgb(165, 195, 211) !important;
+    }
+    .task-completed {
+        background-color: rgb(172, 217, 172) !important;
+    }
+    .task-pause {
+        background-color: rgb(255 188 0 / 52%) !important;
+    }
+    .task-bug {
+        background-color: rgb(244 67 54 / 80%) !important;
+    }
+}
+
+.task {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    padding: 6px 10px;
+    padding-top: 11px;
+    background-color: white;
+    border-bottom: solid 1px #ddd;
+    border-radius: 10px;
+    font-size: 17px;
+    margin-bottom: 10px;
+    // overflow: hidden;
+    box-shadow: 0 4px 4px -3px rgba(0, 0, 0, 0.05), 0 3px 14px 2px rgba(0, 0, 0, 0.05);
+    // box-shadow: var(--ds-shadow-raised, 0 1px 0 #091e4240);
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.682);
+    }
+
+    i {
+        display: none;
+        cursor: pointer;
+        font-size: 20px;
+        padding: 5px;
+        border-radius: 8px;
+        transition: all 0.3s;
+        &:hover {
+            background: rgba(172, 170, 170, 0.4);
+        }
+    }
+    &:hover > i {
+        display: inline-block;
+    }
+    form.editTask {
+        margin: 0;
+        width: 85%;
+        input {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 0.4rem;
+            width: 100%;
+        }
+
+        span {
+            display: inline-block;
+            padding: 4px;
+            font-size: 0.8rem;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 46%;
+        }
+    }
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+    opacity: 1;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.tasks-container.cdk-drop-list-dragging .task:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+// ---------------------------
+
+.add-form_task form {
+    margin: 0;
+    // max-width: 300px !important;
+}
+.add-form_task form input {
+    width: 100%;
+    padding: 6px 10px;
+    padding-bottom: 25px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.05), 0 3px 14px 2px rgba(0, 0, 0, 0.05);
+}
+.add-form_task form button,
+.add-form_task form span {
+    cursor: pointer;
+    width: 40%;
+    padding: 6px 10px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.05), 0 3px 14px 2px rgba(0, 0, 0, 0.05);
+    &:active {
+        animation: press 0.2s 1 linear;
+    }
+}
+@keyframes press {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.92);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+button.btn-common {
+    background-color: var(--cyan);
+    color: #fff;
+    font-size: 0.7rem;
+    border: none;
+    border-radius: 9px;
+    padding: 0.2rem 0.8rem;
+    width: 47%;
+    &:active {
+        animation: press 0.2s 1 linear;
+    }
+}
+.status-card {
+    top: -6px;
+    // left: 7px;
+    button {
+        height: 9px;
+        width: 50px;
+        border-radius: 4px;
+        border: none;
+        background-color: transparent;
+    }
+}
